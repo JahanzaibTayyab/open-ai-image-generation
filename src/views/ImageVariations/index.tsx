@@ -19,60 +19,56 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const PostFormSchema = z.object({
-  url: z.string().refine((data) => data.length > 0, {
-    message: "Prompt is required.",
+  image: z.string().refine((data) => data.length > 0, {
+    message: "Image is required.",
   }),
   openAIKey: z.string().refine((data) => data.length > 0, {
     message: "OpenAI Key is required.",
   }),
 });
 
-const ImageVision = () => {
+const ImageVariation = () => {
   const form = useForm<z.infer<typeof PostFormSchema>>({
     resolver: zodResolver(PostFormSchema),
   });
 
+  console.log(form.getValues().image);
+
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showImage, setShowImage] = useState(false);
+  const [image, setImage] = useState(null);
+  const [file, setFile] = useState<any>();
+
+  const onImageChange = (event: any) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+      setImage(URL.createObjectURL(event.target.files[0]) as any);
+      form.setValue("image", "Set Image");
+    }
+  };
 
   async function onSubmit(values: z.infer<typeof PostFormSchema>) {
     try {
       setLoading(true);
-      setShowImage(true);
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("n", "5");
+      formData.append("size", "512x512");
       const response = await fetch(
-        "https://api.openai.com/v1/chat/completions",
+        "https://api.openai.com/v1/images/variations",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${values.openAIKey}`,
           },
-          body: JSON.stringify({
-            messages: [
-              {
-                role: "user",
-                content: [
-                  {
-                    type: "text",
-                    text: "What’s in this image?",
-                  },
-                  {
-                    type: "image_url",
-                    image_url: {
-                      url: `${values.url}`,
-                    },
-                  },
-                ],
-              },
-            ],
-            max_tokens: 300,
-            model: "gpt-4-vision-preview",
-          }),
+          body: formData,
         }
       );
       const data = await response.json();
-      setContent(data.choices[0].message.content);
+      console.log("🚀 ~ onSubmit ~ data:", data);
+
+      // setContent(data.choices[0].message.content);
     } catch (err) {
       alert(err);
     } finally {
@@ -83,14 +79,12 @@ const ImageVision = () => {
   return (
     <section className="mx-auto">
       <div>
-        <h1 className="font-extrabold text-[#222328] text-[32px]">Vison</h1>
+        <h1 className="font-extrabold text-[#222328] text-[32px]">
+          Variations (DALL·E 2 only)
+        </h1>
         <p className="mt-2 text-[#666e75] text-[14px]">
-          GPT-4 with Vision, sometimes referred to as GPT-4V or
-          gpt-4-vision-preview in the API, allows the model to take in images
-          and answer questions about them. Historically, language model systems
-          have been limited by taking in a single input modality, text. For many
-          use cases, this constrained the areas where models like GPT-4 could be
-          used.
+          The image variations endpoint allows you to generate a variation of a
+          given image.
         </p>
       </div>
       <div className="grid grid-cols-3 gap-5 mt-5">
@@ -103,14 +97,15 @@ const ImageVision = () => {
               <div className="flex flex-col gap-5">
                 <FormField
                   control={form.control}
-                  name="url"
+                  name="image"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Public Image Url</FormLabel>
+                      <FormLabel>Picture</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="https://via.placeholder.com/350x150"
-                          {...field}
+                          id="picture"
+                          type="file"
+                          onChange={onImageChange}
                         />
                       </FormControl>
                       <FormMessage />
@@ -138,20 +133,18 @@ const ImageVision = () => {
                 <div />
                 <Button type="submit" disabled={loading}>
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {loading ? "Please wait" : "Read"}
+                  {loading ? "Please wait" : "Upload"}
                 </Button>
               </div>
             </form>
           </Form>
         </div>
         <div className="border border-dashed p-5">
-          {showImage && (
-            <img
-              className="w-full h-[300px] object-cover"
-              src={form.getValues().url}
-              alt="url Image"
-            />
-          )}
+          <img
+            className="w-full h-[300px] object-cover"
+            src={image as unknown as string}
+            alt="url Image"
+          />
         </div>
         <div className="border border-dashed p-5">
           <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
@@ -160,4 +153,4 @@ const ImageVision = () => {
     </section>
   );
 };
-export default ImageVision;
+export default ImageVariation;
