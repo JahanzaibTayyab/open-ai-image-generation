@@ -14,7 +14,7 @@ export default function Home({
   const currentPage = Number(searchParams?.page) || 1;
 
   return (
-    <main className="py-2">
+    <main className="py-2 px-10">
       <section className="max-w-7xl mx-auto">
         <div>
           <h1 className="font-extrabold text-[#222328] text-[32px]">
@@ -28,10 +28,10 @@ export default function Home({
         <div className="mt-10">
           <Search placeholder="Search something..." />
         </div>
-        <Suspense key={query + currentPage} fallback={null}>
-          <RenderPost query={query} />
-        </Suspense>
       </section>
+      <Suspense key={query + currentPage} fallback={null}>
+        <RenderPost query={query} />
+      </Suspense>
     </main>
   );
 }

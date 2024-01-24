@@ -1,20 +1,16 @@
 import { PostCard } from "@/components/postCard";
 import React from "react";
-import { posts } from "@/utils/data";
+import { getPosts } from "@/lib/actions";
 
-function RenderPost({ query }: { query: string }) {
+async function RenderPost({ query }: { query: string }) {
+  const posts = await getPosts(query);
   return (
-    <div className="grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3 justify-center items-center mt-10">
-      {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          post={post}
-          className="w-[250px]"
-          aspectRatio="portrait"
-          width={250}
-          height={330}
-        />
-      ))}
+    <div className="p-5 sm:p-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {posts?.map((post) => (
+          <PostCard key={post.id} post={post} width={500} height={500} />
+        ))}
+      </div>
     </div>
   );
 }
