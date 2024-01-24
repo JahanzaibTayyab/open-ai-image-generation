@@ -1,3 +1,4 @@
+import { CardsSkeleton } from "@/components/skeletons";
 import RenderPost from "@/views/RenderPost";
 import Search from "@/components/search";
 import { Suspense } from "react";
@@ -29,7 +30,7 @@ export default function Home({
           <Search placeholder="Search something..." />
         </div>
       </section>
-      <Suspense key={query + currentPage} fallback={null}>
+      <Suspense key={query + currentPage} fallback={<CardsSkeleton />}>
         <RenderPost query={query} />
       </Suspense>
     </main>

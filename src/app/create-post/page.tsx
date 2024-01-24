@@ -29,36 +29,16 @@ function CreatePost() {
       <Tabs defaultValue="text" className="space-y-4 py-5">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="text">Text To Image</TabsTrigger>
-          <TabsTrigger value="password">Edit Image</TabsTrigger>
-          <TabsTrigger value="password">Variation</TabsTrigger>
-          <TabsTrigger value="password">Vision</TabsTrigger>
+          <TabsTrigger value="edit-image">Edit Image</TabsTrigger>
+          <TabsTrigger value="variation">Variation</TabsTrigger>
+          <TabsTrigger value="vision">Vision</TabsTrigger>
         </TabsList>
         <TabsContent value="text">
           <TextToImage />
         </TabsContent>
-        <TabsContent value="password">
-          {/* <Card>
-          <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>
-              Change your password here. After saving, you'll be logged out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save password</Button>
-          </CardFooter>
-        </Card> */}
-        </TabsContent>
+        <TabsContent value="edit-image"></TabsContent>
+        <TabsContent value="variation"></TabsContent>
+        <TabsContent value="vision"></TabsContent>
       </Tabs>
     </div>
   );
