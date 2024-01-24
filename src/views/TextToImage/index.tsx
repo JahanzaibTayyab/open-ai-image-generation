@@ -66,12 +66,11 @@ const TextToImage = () => {
           body: JSON.stringify({
             prompt: values.prompt,
             model: "dall-e-3",
-            response_format: "b64_json",
           }),
         }
       );
       const data = await response.json();
-      form.setValue("photo", `data:image/png;base64,${data.data[0].b64_json}`);
+      form.setValue("photo", data.data[0].url);
       form.setValue("prompt", data.data[0].revised_prompt);
     } catch (err) {
       alert(err);
@@ -86,28 +85,8 @@ const TextToImage = () => {
   };
 
   const handleShare = async () => {
-    createPost(form.getValues());
-    // if (form.prompt && form.photo) {
-    //   setLoading(true);
-    //   try {
-    //     const response = await fetch("/api/post", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ ...form }),
-    //     });
-    //     await response.json();
-    //     alert("Success");
-    //     router.replace("/");
-    //   } catch (err) {
-    //     alert(err);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // } else {
-    //   alert("Please generate an image with proper details");
-    // }
+    setLoading(true);
+    await createPost(form.getValues());
   };
 
   return (

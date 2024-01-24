@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "vxkqkeneqsfzeoodyczt.supabase.co",
       },
+      {
+        protocol: "http",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
 };
