@@ -47,6 +47,9 @@ export const createPost = async (values: z.infer<typeof PostFormSchema>) => {
 export const getPosts = async (query: string) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const { data: post, error } = await supabase.from("post").select("*");
+  const { data: post, error } = await supabase
+    .from("post")
+    .select("*")
+    .order("id", { ascending: false });
   return post;
 };
