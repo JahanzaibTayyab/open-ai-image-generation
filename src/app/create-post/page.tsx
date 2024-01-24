@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import ImageVision from "@/views/ImageVision";
 import React from "react";
 import TextToImage from "@/views/TextToImage";
 
@@ -26,7 +27,7 @@ function CreatePost() {
           <li>Creating variations of an existing image (DALL·E 2 only)</li>
         </ol>
       </div>
-      <Tabs defaultValue="text" className="space-y-4 py-5">
+      <Tabs defaultValue="vision" className="space-y-4 py-5">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="text">Text To Image</TabsTrigger>
           <TabsTrigger value="edit-image">Edit Image</TabsTrigger>
@@ -38,7 +39,9 @@ function CreatePost() {
         </TabsContent>
         <TabsContent value="edit-image"></TabsContent>
         <TabsContent value="variation"></TabsContent>
-        <TabsContent value="vision"></TabsContent>
+        <TabsContent value="vision">
+          <ImageVision />
+        </TabsContent>
       </Tabs>
     </div>
   );

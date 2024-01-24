@@ -1,14 +1,16 @@
 "use client";
 
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import { Button } from "./ui/button";
 import React from "react";
 import { downloadImage } from "@/utils";
 
 function DownloadImage({ id, photo }: { id: string; photo: string }) {
   return (
-    <button type="button" onClick={() => downloadImage(id, photo)}>
-      <ArrowDownTrayIcon className="h-[24px] w-[24px] text-gray-500 peer-focus:text-gray-900" />
-    </button>
+    <Button type="button" onClick={() => downloadImage(id, photo)}>
+      Download
+      <ArrowDownTrayIcon className="h-[20px] w-[20px] ml-1" />
+    </Button>
   );
 }
 
